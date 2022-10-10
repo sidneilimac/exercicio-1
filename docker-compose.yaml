@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo:4.4.15
+    #container_name: mongodb
+    restart: unless-stopped
+    environment: # set required env variables to access mongo
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    #ports:
+    #  - 27017:27017 # porta apenas para comunicação externa
+    volumes: # optional to preserve database after container is deleted.
+      - ./database-data:/data/db
+  
+  # Mongo Express Service
+  mongo-express:
+    image: mongo-express:latest # latest image
+    container_name: mongo-express
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root # Nome do usuário do mongodb, setado na linha 8, neste caso root.
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password # Senha setada na linha 9 neste caso password.
+      ME_CONFIG_MONGODB_SERVER: mongodb # Nome do seriço, neste caso o da linha 3 - mongodb .
+      
+
